@@ -17,7 +17,7 @@
       PLAYER_WIDTH  = METER * 1.5,                                          // player logical width
       PLAYER_HEIGHT = METER * 2,                                            // player logical height
       GROUND_SPEED  = 2,                                                    // how fast ground scrolls left-right
-      GRAVITY       = 9.8 * 2,                                              // (exagerated) gravity
+      GRAVITY       = 9.8 * 1,                                              // (exagerated) gravity
       MAXDX         = 10,                                                   // player max horizontal speed (meters per second)
       MAXDY         = (ROW_SURFACE*FPS/METER),                              // player max vertical speed (meters per second) - ENSURES CANNOT FALL THROUGH PLATFORM SURFACE
       CLIMBDY       = 6,                                                    // player climbing speed (meters per second)
@@ -33,7 +33,7 @@
       IMAGES        = ['ground', 'ladder', 'player', 'monster', 'coins'],   // sprite image files for loading
       PSW           = 72,                                                   // player sprite width
       PSH           = 96,                                                   // player sprite height
-      PLAYER        = { 
+      PLAYER        = {
         DEBUG: false, // enable player debug rendering (bounding box and collision points)
         STAND: { x: 0,  y: 0, w: PSW, h: PSH, frames: 1,  fps: 30 },        // animation - player standing still
         BACK:  { x: 72, y: 0, w: PSW, h: PSH, frames: 1,  fps: 30 },        // animation - player standing still with back to camera (on ladder but not moving)
@@ -44,52 +44,52 @@
         HURTR: { x: 720, y: 0, w: PSW, h: PSH, frames: 1,  fps: 10 }         // animation - player hurt while running right
       },
       MONSTERS = [
-        { 
-          name: "NAUKA", 
-          nx: -0.5, ny: -0.5, 
-          w: 1.5*METER, h: 1.5*METER, 
-          speed: 4*METER, 
-          dir: 'up', 
-          vertical: true, horizontal: false, 
-          animation: { 
-            up:   { x: 0, y: 0, w: 50, h: 50, frames: 2, fps: 5 }, 
-            down: { x: 0, y: 0, w: 50, h: 50, frames: 2, fps: 5 } 
-          } 
+        {
+          name: "NAUKA",
+          nx: -0.5, ny: -0.5,
+          w: 1.5*METER, h: 1.5*METER,
+          speed: 4*METER,
+          dir: 'up',
+          vertical: true, horizontal: false,
+          animation: {
+            up:   { x: 0, y: 0, w: 50, h: 50, frames: 2, fps: 5 },
+            down: { x: 0, y: 0, w: 50, h: 50, frames: 2, fps: 5 }
+          }
         },
-        { 
-          name: "RANDO", 
-          nx: -0.5, ny: -0.5, 
-          w: 2.5*METER, h: 1.0*METER, 
-          speed: 8*METER, 
-          dir: 'left', 
-          vertical: false, horizontal: true, 
-          animation: { 
-            left:   { x: 100, y: 7, w: 76, h: 36, frames: 2, fps: 5 }, 
-            right:  { x: 252, y: 7, w: 76, h: 36, frames: 2, fps: 5 } 
-          } 
+        {
+          name: "RANDO",
+          nx: -0.5, ny: -0.5,
+          w: 2.5*METER, h: 1.0*METER,
+          speed: 8*METER,
+          dir: 'left',
+          vertical: false, horizontal: true,
+          animation: {
+            left:   { x: 100, y: 7, w: 76, h: 36, frames: 2, fps: 5 },
+            right:  { x: 252, y: 7, w: 76, h: 36, frames: 2, fps: 5 }
+          }
         },
-        { name: "OOKER", 
-          nx: -0.5, ny: 0.0, 
-          w: 1.5*METER, h: 1.0*METER, 
-          speed: 4*METER, 
-          dir: 'right', 
-          vertical: false, horizontal: true, 
-          animation: { 
-            left:   { x: 404, y: 11, w: 50, h: 28, frames: 2, fps: 5 }, 
-            right:  { x: 504, y: 11, w: 50, h: 28, frames: 2, fps: 5 } 
-          } 
+        { name: "OOKER",
+          nx: -0.5, ny: 0.0,
+          w: 1.5*METER, h: 1.0*METER,
+          speed: 4*METER,
+          dir: 'right',
+          vertical: false, horizontal: true,
+          animation: {
+            left:   { x: 404, y: 11, w: 50, h: 28, frames: 2, fps: 5 },
+            right:  { x: 504, y: 11, w: 50, h: 28, frames: 2, fps: 5 }
+          }
         },
-        { 
-          name: "KARIN", 
-          nx: -0.5, ny: 0.0, 
-          w: 1.5*METER, h: 1.0*METER, 
-          speed: 2*METER, 
-          dir: 'left', 
-          vertical: false, horizontal: true, 
-          animation: { 
-            left:   { x: 604, y: 9, w: 58, h: 32, frames: 2, fps: 5 }, 
-            right:  { x: 720, y: 9, w: 58, h: 32, frames: 2, fps: 5 } 
-          } 
+        {
+          name: "KARIN",
+          nx: -0.5, ny: 0.0,
+          w: 1.5*METER, h: 1.0*METER,
+          speed: 2*METER,
+          dir: 'left',
+          vertical: false, horizontal: true,
+          animation: {
+            left:   { x: 604, y: 9, w: 58, h: 32, frames: 2, fps: 5 },
+            right:  { x: 720, y: 9, w: 58, h: 32, frames: 2, fps: 5 }
+          }
         }
       ];
 
@@ -288,7 +288,7 @@
 
       this.ddx = 0;
       this.ddy = falling ? -this.gravity : 0;
-    
+
       if (this.climbing) {
         this.ddy = 0;
         if (this.input.up)
@@ -308,12 +308,12 @@
         this.ddx = this.ddx + accel;
       else if (wasright)
         this.ddx = this.ddx - friction;
-    
+
       if (this.input.jump && (!falling || this.fallingJump))
         this.performJump();
 
       this.updatePosition(dt);
-    
+
       while (this.checkCollision()) {
         // iterate until no more collisions
       }
@@ -396,7 +396,7 @@
           ur           = this.collision.underRight,
           ld           = this.collision.ladderDown,
           lu           = this.collision.ladderUp;
-      
+
       this.updateCollisionPoint(tl);
       this.updateCollisionPoint(tr);
       this.updateCollisionPoint(ml);
@@ -854,7 +854,7 @@
           ctx.moveTo(-tower.ir, y);
           ctx.lineTo( tower.ir, y);
           this.renderBricks(ctx, y, offsets[offset]);
-        } 
+        }
         offset = (offset < offsets.length-1 ? offset + 1 : 0);
       }
 
@@ -951,7 +951,7 @@
       ctx.fillStyle = Game.Math.darken(tower.color.platform, 60 * Math.min(1, Math.abs(a/90)));
       ctx.fillRect(  x1, y - ROW_HEIGHT, x2 - x1, ROW_HEIGHT);
       ctx.strokeRect(x1, y - ROW_HEIGHT, x2 - x1, ROW_HEIGHT);
-   
+
     },
 
     //-------------------------------------------------------------------------
@@ -1047,7 +1047,7 @@
           y = Game.Math.randomInt(2, HEIGHT-4);
           r = Game.Math.randomChoice(sizes);
           ctx.fillRect(x,y,r,r);
-        } 
+        }
       });
     },
 
