@@ -1,98 +1,10 @@
+import * as Constants from './Constants.js';
+import Tower from './Tower.js';
+
+
 (function() { // private module pattern
 
   'use strict'
-
-
-  //===========================================================================
-  // CONSTANTS
-  //===========================================================================
-
-  var FPS           = 60,                                                   // 'update' frame rate fixed at 60fps independent of rendering loop
-      WIDTH         = 720,                                                  // must have width multiple of 360...
-      HEIGHT        = 540,                                                  // ... and 4:3 w:h ratio
-      HORIZON       = HEIGHT/10,                                             // how much ground to show below the tower
-      METER         = HEIGHT/20,                                            // how many pixels represent 1 meter
-      COL_WIDTH     = METER * 3,                                            // 2D column width
-      ROW_HEIGHT    = METER,                                                // 2D row height
-      ROW_SURFACE   = ROW_HEIGHT * 0.3,                                     // amount of row considered 'near' enough to surface to allow jumping onto that row (instead of bouncing off again)
-      PLAYER_WIDTH  = METER * 1.5,                                          // player logical width
-      PLAYER_HEIGHT = METER * 2,                                            // player logical height
-      GROUND_SPEED  = 2,                                                    // how fast ground scrolls left-right
-      GRAVITY       = 9.8 * 4,                                              // (exagerated) gravity
-      MAXDX         = 10,                                                   // player max horizontal speed (meters per second)
-      MAXDY         = (ROW_SURFACE*FPS/METER),                              // player max vertical speed (meters per second) - ENSURES CANNOT FALL THROUGH PLATFORM SURFACE
-      CLIMBDY       = 8,                                                    // player climbing speed (meters per second)
-      ACCEL         = 1/4,                                                  // player take 1/4 second to reach maxdx (horizontal acceleration)
-      FRICTION      = 1/8,                                                  // player take 1/8 second to stop from maxdx (horizontal friction)
-      IMPULSE       = 15 * FPS,                                             // player jump impulse
-      FALLING_JUMP  = FPS/5,                                                // player allowed to jump for 1/5 second after falling off a platform
-      LADDER_EDGE   = 0.6,                                                  // how far from ladder center (60%) is ladder's true collision boundary, e.g. you fall off if you get more than 60% away from center of ladder
-      COIN          = { W: ROW_HEIGHT, H: ROW_HEIGHT },                     // logical size of coin
-      DIR           = { NONE: 0, LEFT: 1, RIGHT: 2, UP: 3, DOWN: 4 },       // useful enum for declaring an abstract direction
-      STEP          = { FRAMES: 8, W: COL_WIDTH/10, H: ROW_HEIGHT },        // attributes of player stepping up
-      KEY           = { SPACE: 32, LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40 }, // input key codes
-      IMAGES        = ['ground', 'ladder', 'player', 'monster', 'coins'],   // sprite image files for loading
-      PSW           = 72,                                                   // player sprite width
-      PSH           = 96,                                                   // player sprite height
-      PLAYER        = { 
-        DEBUG: false, // enable player debug rendering (bounding box and collision points)
-        STAND: { x: 0,  y: 0, w: PSW, h: PSH, frames: 1,  fps: 30 },        // animation - player standing still
-        BACK:  { x: 72, y: 0, w: PSW, h: PSH, frames: 1,  fps: 30 },        // animation - player standing still with back to camera (on ladder but not moving)
-        RIGHT: { x: 144,    y: 0, w: PSW, h: PSH, frames: 4, fps: 30 },        // animation - player running right
-        LEFT:  { x: 432, y: 0, w: PSW, h: PSH, frames: 4, fps: 30 },        // animation - player running left
-        CLIMB: { x: 864, y: 0, w: PSW, h: PSH, frames: 4, fps: 20 },        // animation - player climbing ladder
-        HURTL: { x: 792, y: 0, w: PSW, h: PSH, frames: 1,  fps: 10 },        // animation - player hurt while running left
-        HURTR: { x: 720, y: 0, w: PSW, h: PSH, frames: 1,  fps: 10 }         // animation - player hurt while running right
-      },
-      MONSTERS = [
-        { 
-          name: "NAUKA", 
-          nx: -0.5, ny: -0.5, 
-          w: 1.5*METER, h: 1.5*METER, 
-          speed: 4*METER, 
-          dir: 'up', 
-          vertical: true, horizontal: false, 
-          animation: { 
-            up:   { x: 0, y: 0, w: 50, h: 50, frames: 2, fps: 5 }, 
-            down: { x: 0, y: 0, w: 50, h: 50, frames: 2, fps: 5 } 
-          } 
-        },
-        { 
-          name: "RANDO", 
-          nx: -0.5, ny: -0.5, 
-          w: 2.5*METER, h: 1.0*METER, 
-          speed: 8*METER, 
-          dir: 'left', 
-          vertical: false, horizontal: true, 
-          animation: { 
-            left:   { x: 100, y: 7, w: 76, h: 36, frames: 2, fps: 5 }, 
-            right:  { x: 252, y: 7, w: 76, h: 36, frames: 2, fps: 5 } 
-          } 
-        },
-        { name: "OOKER", 
-          nx: -0.5, ny: 0.0, 
-          w: 1.5*METER, h: 1.0*METER, 
-          speed: 4*METER, 
-          dir: 'right', 
-          vertical: false, horizontal: true, 
-          animation: { 
-            left:   { x: 404, y: 11, w: 50, h: 28, frames: 2, fps: 5 }, 
-            right:  { x: 504, y: 11, w: 50, h: 28, frames: 2, fps: 5 } 
-          } 
-        },
-        { 
-          name: "KARIN", 
-          nx: -0.5, ny: 0.0, 
-          w: 1.5*METER, h: 1.0*METER, 
-          speed: 2*METER, 
-          dir: 'left', 
-          vertical: false, horizontal: true, 
-          animation: { 
-            left:   { x: 604, y: 9, w: 58, h: 32, frames: 2, fps: 5 }, 
-            right:  { x: 720, y: 9, w: 58, h: 32, frames: 2, fps: 5 } 
-          } 
-        }
-      ];
 
   //===========================================================================
   // VARIABLES
@@ -110,26 +22,26 @@
 
   function normalizex(x)              { return Game.Math.normalize(x,   0, tower.w);                       }  // wrap x-coord around to stay within tower boundary
   function normalizeColumn(col)       { return Game.Math.normalize(col, 0, tower.cols);                    }  // wrap column  around to stay within tower boundary
-  function x2col(x)                   { return Math.floor(normalizex(x)/COL_WIDTH);                        }  // convert x-coord to tower column index
-  function y2row(y)                   { return Math.floor(y/ROW_HEIGHT);                                   }  // convert y-coord to tower row    index
-  function col2x(col)                 { return col * COL_WIDTH;                                            }  // convert tower column index to x-coord
-  function row2y(row)                 { return row * ROW_HEIGHT;                                           }  // convert tower row    index to y-coord
+  function x2col(x)                   { return Math.floor(normalizex(x)/Constants.COL_WIDTH);                        }  // convert x-coord to tower column index
+  function y2row(y)                   { return Math.floor(y/Constants.ROW_HEIGHT);                                   }  // convert y-coord to tower row    index
+  function col2x(col)                 { return col * Constants.COL_WIDTH;                                            }  // convert tower column index to x-coord
+  function row2y(row)                 { return row * Constants.ROW_HEIGHT;                                           }  // convert tower row    index to y-coord
   function x2a(x)                     { return 360 * (normalizex(x)/tower.w);                              }  // convert x-coord to an angle around the tower
   function tx(x, r)                   { return r * Math.sin((normalizex(x-camera.rx)/tower.w) *2*Math.PI); }  // transform x-coord for rendering
-  function ty(y)                      { return HEIGHT - HORIZON - (y - camera.ry);                         }  // transform y-coord for rendering
-  function nearColCenter(x,col,limit) { return limit > Math.abs(x - col2x(col + 0.5))/(COL_WIDTH/2);       }  // is x-coord "near" the center  of a tower column
-  function nearRowSurface(y,row)      { return y > (row2y(row+1) - ROW_SURFACE);                           }  // is y-coord "near" the surface of a tower row
+  function ty(y)                      { return Constants.HEIGHT - Constants.HORIZON - (y - camera.ry);                         }  // transform y-coord for rendering
+  function nearColCenter(x,col,limit) { return limit > Math.abs(x - col2x(col + 0.5))/(Constants.COL_WIDTH/2);       }  // is x-coord "near" the center  of a tower column
+  function nearRowSurface(y,row)      { return y > (row2y(row+1) - Constants.ROW_SURFACE);                           }  // is y-coord "near" the surface of a tower row
 
   //===========================================================================
   // GAME - SETUP/UPDATE/RENDER
   //===========================================================================
 
   function run() {
-    Game.Load.images(IMAGES, function(images) {
+    Game.Load.images(Constants.IMAGES, function(images) {
       Game.Load.json("levels/demo", function(level) {
         setup(images, level);
         Game.run({
-          fps:    FPS,
+          fps:    Constants.FPS,
           update: update,
           render: render
         });
@@ -141,10 +53,11 @@
 
   function setup(images, level) {
     tower    = new Tower(level);
+    tower.initialize(level);
     monsters = new Monsters(level);
     player   = new Player();
     camera   = new Camera();
-    renderer = new Renderer(images);
+    renderer = new Renderer(images, tower);
   }
 
   function update(dt) {
@@ -159,76 +72,24 @@
 
   function onkey(ev, key, pressed) {
     switch(key) {
-      case KEY.LEFT:  player.input.left  = pressed; ev.preventDefault(); return false;
-      case KEY.RIGHT: player.input.right = pressed; ev.preventDefault(); return false;
-      case KEY.UP:    player.input.up    = pressed; ev.preventDefault(); return false;
-      case KEY.DOWN:  player.input.down  = pressed; ev.preventDefault(); return false;
+      case Constants.KEY.LEFT:  player.input.left  = pressed; ev.preventDefault(); return false;
+      case Constants.KEY.RIGHT: player.input.right = pressed; ev.preventDefault(); return false;
+      case Constants.KEY.UP:    player.input.up    = pressed; ev.preventDefault(); return false;
+      case Constants.KEY.DOWN:  player.input.down  = pressed; ev.preventDefault(); return false;
 
-      case KEY.SPACE:
+      case Constants.KEY.SPACE:
         player.input.jump          = pressed && player.input.jumpAvailable;
         player.input.jumpAvailable = !pressed;
         break;
     }
   }
 
-  //===========================================================================
-  // TOWER
-  //===========================================================================
 
-  var Tower = Class.create({
 
-    //-------------------------------------------------------------------------
 
-    initialize: function(level) {
 
-      var row, col;
 
-      level.map.reverse(); // make 0 index the ground, increasing towards the sky
 
-      this.name     = level.name;
-      this.color    = level.color;
-      this.rows     = level.map.length;
-      this.cols     = level.map[0].length;
-      this.ir       = WIDTH/4;                 // inner radius (walls)
-      this.or       = this.ir * 1.2;           // outer radius (walls plus platforms)
-      this.w        = this.cols * COL_WIDTH;
-      this.h        = this.rows * ROW_HEIGHT;
-      this.map      = this.createMap(level.map);
-      this.ground   = { platform: true  };
-      this.air      = { platform: false };
-
-    },
-
-    //-------------------------------------------------------------------------
-
-    getCell: function(row, col) {
-      if (row < 0)
-        return this.ground;
-      else if (row >= this.rows)
-        return this.air;
-      else
-        return this.map[row][normalizeColumn(col)];
-    },
-
-    //-------------------------------------------------------------------------
-
-    createMap: function(source) {
-      var row, col, cell, map = [];
-      for(row = 0 ; row < this.rows ; row++) {
-        map[row] = [];
-        for(col = 0 ; col < this.cols ; col++) {
-          cell = source[row][col];
-          map[row][col] = {
-            platform: (cell == 'X'),
-            ladder:   (cell == 'H'),
-            coin:     (cell == 'o')
-          };
-        }
-      }
-      return map;
-    }
-
-  });
 
   //===========================================================================
   // PLAYER
@@ -240,20 +101,20 @@
 
       this.x         = col2x(0.5);
       this.y         = row2y(0);
-      this.w         = PLAYER_WIDTH;
-      this.h         = PLAYER_HEIGHT;
+      this.w         = Constants.PLAYER_WIDTH;
+      this.h         = Constants.PLAYER_HEIGHT;
       this.dx        = 0;
       this.dy        = 0;
-      this.gravity   = METER * GRAVITY;
-      this.maxdx     = METER * MAXDX;
-      this.maxdy     = METER * MAXDY;
-      this.climbdy   = METER * CLIMBDY;
-      this.impulse   = METER * IMPULSE;
-      this.accel     = this.maxdx / ACCEL;
-      this.friction  = this.maxdx / FRICTION;
+      this.gravity   = Constants.METER * Constants.GRAVITY;
+      this.maxdx     = Constants.METER * Constants.MAXDX;
+      this.maxdy     = Constants.METER * Constants.MAXDY;
+      this.climbdy   = Constants.METER * Constants.CLIMBDY;
+      this.impulse   = Constants.METER * Constants.IMPULSE;
+      this.accel     = this.maxdx / Constants.ACCEL;
+      this.friction  = this.maxdx / Constants.FRICTION;
       this.input     = { left: false, right: false, up: false, down: false, jump: false, jumpAvailable: true };
       this.collision = this.createCollisionPoints();
-      this.animation = PLAYER.STAND;
+      this.animation = Constants.PLAYER.STAND;
       this.score     = 0;
 
     },
@@ -347,7 +208,7 @@
         this.dx  = -this.dx/2;
         this.ddx = 0;
         this.ddy = this.impulse/2;
-        this.hurting = FPS;
+        this.hurting = Constants.FPS;
         this.hurtLeft = this.input.left;
       }
       else {
@@ -365,17 +226,17 @@
 
     animate: function() {
       if (this.hurting)
-        Game.animate(FPS, this, this.hurtLeft ? PLAYER.HURTL : PLAYER.HURTR);
+        Game.animate(Constants.FPS, this, this.hurtLeft ? Constants.PLAYER.HURTL : Constants.PLAYER.HURTR);
       else if (this.climbing && (this.input.up || this.input.down || this.input.left || this.input.right))
-        Game.animate(FPS, this, PLAYER.CLIMB);
+        Game.animate(Constants.FPS, this, Constants.PLAYER.CLIMB);
       else if (this.climbing)
-        Game.animate(FPS, this, PLAYER.BACK);
-      else if (this.input.left  || (this.stepping == DIR.LEFT))
-        Game.animate(FPS, this, PLAYER.LEFT);
-      else if (this.input.right || (this.stepping == DIR.RIGHT))
-        Game.animate(FPS, this, PLAYER.RIGHT);
+        Game.animate(Constants.FPS, this, Constants.PLAYER.BACK);
+      else if (this.input.left  || (this.stepping == Constants.DIR.LEFT))
+        Game.animate(Constants.FPS, this, Constants.PLAYER.LEFT);
+      else if (this.input.right || (this.stepping == Constants.DIR.RIGHT))
+        Game.animate(Constants.FPS, this, Constants.PLAYER.RIGHT);
       else
-        Game.animate(FPS, this, PLAYER.STAND);
+        Game.animate(Constants.FPS, this, Constants.PLAYER.STAND);
     },
 
     checkCollision: function() {
@@ -497,7 +358,7 @@
         }
       }
       if (point.cell.coin) {
-        if (Game.Math.between(this.x + point.x, col2x(point.col+0.5) - COIN.W/2, col2x(point.col+0.5) + COIN.W/2) &&  // center point of column +/- COIN.W/2
+        if (Game.Math.between(this.x + point.x, col2x(point.col+0.5) - Constants.COIN.W/2, col2x(point.col+0.5) + Constants.COIN.W/2) &&  // center point of column +/- COIN.W/2
             Game.Math.between(this.y + point.y, row2y(point.row), row2y(point.row+1))) {
           point.coin = true;
         }
@@ -511,7 +372,7 @@
 
     startFalling: function(allowFallingJump) {
       this.falling     = true;
-      this.fallingJump = allowFallingJump ? FALLING_JUMP : 0;
+      this.fallingJump = allowFallingJump ? Constants.FALLING_JUMP : 0;
     },
 
     collide: function(point, left) {
@@ -544,15 +405,15 @@
 
     startSteppingUp: function(dir) {
       this.stepping  = dir;
-      this.stepCount = STEP.FRAMES;
+      this.stepCount = Constants.STEP.FRAMES;
       return false; // NOT considered a collision
     },
 
     stepUp: function() {
 
-      var left = (this.stepping == DIR.LEFT),
-          dx   = STEP.W / STEP.FRAMES,
-          dy   = STEP.H / STEP.FRAMES;
+      var left = (this.stepping == Constants.DIR.LEFT),
+          dx   = Constants.STEP.W / Constants.STEP.FRAMES,
+          dy   = Constants.STEP.H / Constants.STEP.FRAMES;
 
       this.dx  = 0;
       this.dy  = 0;
@@ -560,7 +421,7 @@
       this.y   =            this.y +               dy;
 
       if (--(this.stepCount) == 0)
-        this.stepping = DIR.NONE;
+        this.stepping = Constants.DIR.NONE;
     },
 
     startClimbing: function() {
@@ -583,6 +444,15 @@
     }
 
   });
+
+
+
+
+
+
+
+
+
 
   //===========================================================================
   // MONSTERS
@@ -610,7 +480,7 @@
         for(col = 0 ; col < tower.cols ; col++) {
           type = parseInt(source[row][col], 10);
           if (!isNaN(type)) {
-            monster = new Monster(row, col, MONSTERS[type]);
+            monster = new Monster(row, col, Constants.MONSTERS[type]);
             all.push(monster);
             tower.map[row][col].monster = monster;
           }
@@ -725,10 +595,21 @@
         this.col = col;
       }
 
-      Game.animate(FPS, this);
+      Game.animate(Constants.FPS, this);
     }
 
   });
+
+
+
+
+
+
+
+
+
+
+
 
   //===========================================================================
   // CAMERA
@@ -754,6 +635,16 @@
 
   });
 
+
+
+
+
+
+
+
+
+
+
   //===========================================================================
   // RENDERER
   //===========================================================================
@@ -762,7 +653,7 @@
 
     initialize: function(images) {
       this.images        = images;
-      this.canvas        = Game.Canvas.init(Dom.get('canvas'), WIDTH, HEIGHT);
+      this.canvas        = Game.Canvas.init(Dom.get('canvas'), Constants.WIDTH, Constants.HEIGHT);
       this.ctx           = this.canvas.getContext('2d');
       this.stars         = this.createStars();
       this.gradient      = this.createGradient();
@@ -785,10 +676,10 @@
       player.ry = Math.max(0, player.ry); // dont let sub-frame interpolation take the player below the horizon
       camera.ry = Math.max(0, camera.ry); // dont let sub-frame interpolation take the camera below the horizon
 
-      this.ctx.clearRect(0, 0, WIDTH, HEIGHT);
+      this.ctx.clearRect(0, 0, Constants.WIDTH, Constants.HEIGHT);
       this.renderStars(this.ctx);
       this.ctx.save();
-      this.ctx.translate(WIDTH/2, 0);
+      this.ctx.translate(Constants.WIDTH/2, 0);
       this.renderBack(this.ctx);
       this.renderTower(this.ctx);
       this.renderFront(this.ctx);
@@ -805,10 +696,10 @@
 
     renderStars: function(ctx) {
 
-      var x  = Game.Math.normalize(WIDTH  * camera.x/tower.w, 0, WIDTH),
-          y  = Game.Math.normalize(HEIGHT * camera.y/tower.h, 0, HEIGHT),
-          nx = WIDTH  - x,
-          ny = HEIGHT - y;
+      var x  = Game.Math.normalize(Constants.WIDTH  * camera.x/tower.w, 0, Constants.WIDTH),
+          y  = Game.Math.normalize(Constants.HEIGHT * camera.y/tower.h, 0, Constants.HEIGHT),
+          nx = Constants.WIDTH  - x,
+          ny = Constants.HEIGHT - y;
 
         ctx.drawImage(this.stars, 0,   0,  nx, ny,   x, y, nx, ny);
       if (x > 0)
@@ -826,11 +717,11 @@
       var ground = this.ground,
           x      = ground.w * (camera.rx/tower.w),
           y      = ty(0),
-          w      = Math.min(WIDTH, ground.w-x),
-          w2     = WIDTH - w;
-      ctx.drawImage(ground.image, x, 0, w, ground.h, -WIDTH/2, y, w, ground.h);
+          w      = Math.min(Constants.WIDTH, ground.w-x),
+          w2     = Constants.WIDTH - w;
+      ctx.drawImage(ground.image, x, 0, w, ground.h, -Constants.WIDTH/2, y, w, ground.h);
       if (w2 > 0)
-        ctx.drawImage(ground.image, 0, 0, w2, ground.h, -WIDTH/2 + w, y, w2, ground.h);
+        ctx.drawImage(ground.image, 0, 0, w2, ground.h, -Constants.WIDTH/2 + w, y, w2, ground.h);
     },
 
     //-------------------------------------------------------------------------
@@ -839,7 +730,7 @@
 
       var offsets = [0, 0.5],
           top     = Math.max(ty(tower.h), 0),
-          bottom  = Math.min(ty(0),       HEIGHT);
+          bottom  = Math.min(ty(0),       Constants.HEIGHT);
 
       ctx.fillStyle = this.gradient;
       ctx.fillRect(-tower.ir, top, tower.ir * 2, bottom - top);
@@ -849,8 +740,8 @@
       ctx.beginPath();
       var n, y, offset = 0;
       for(n = 0 ; n < tower.rows ; n++) {
-        y = ty(n*ROW_HEIGHT);
-        if (Game.Math.between(y, -ROW_HEIGHT, HEIGHT + ROW_HEIGHT)) {
+        y = ty(n*Constants.ROW_HEIGHT);
+        if (Game.Math.between(y, -Constants.ROW_HEIGHT, Constants.HEIGHT + Constants.ROW_HEIGHT)) {
           ctx.moveTo(-tower.ir, y);
           ctx.lineTo( tower.ir, y);
           this.renderBricks(ctx, y, offsets[offset]);
@@ -873,12 +764,12 @@
     renderBricks: function(ctx, y, offset) {
       var n, x, a;
       for(n = 0 ; n < tower.cols ; n++) {
-        x = (n+offset) * COL_WIDTH;
+        x = (n+offset) * Constants.COL_WIDTH;
         a = Game.Math.normalizeAngle180(x2a(x) - x2a(camera.rx));
         if (Game.Math.between(a, -90, 90)) {
           x = tx(x, tower.ir);
           ctx.moveTo(x, y);
-          ctx.lineTo(x, y - ROW_HEIGHT);
+          ctx.lineTo(x, y - Constants.ROW_HEIGHT);
         }
       }
     },
@@ -918,12 +809,12 @@
 
     renderQuadrant: function(ctx, min, max, dir) {
       var r, y, cell,
-          rmin = Math.max(0,              y2row(camera.ry - HORIZON) - 1),
-          rmax = Math.min(tower.rows - 1, rmin + (HEIGHT / ROW_HEIGHT + 1)),
+          rmin = Math.max(0,              y2row(camera.ry - Constants.HORIZON) - 1),
+          rmax = Math.min(tower.rows - 1, rmin + (Constants.HEIGHT / Constants.ROW_HEIGHT + 1)),
           c    = min;
       while (c != max) {
         for(r = rmin ; r <= rmax ; r++) {
-          y = ty(r * ROW_HEIGHT);
+          y = ty(r * Constants.ROW_HEIGHT);
           cell = tower.getCell(r, c);
           if (cell.platform)
             this.renderPlatform(ctx, c, y);
@@ -949,8 +840,8 @@
           x2 = x0 + this.platformWidth/2;
 
       ctx.fillStyle = Game.Math.darken(tower.color.platform, 60 * Math.min(1, Math.abs(a/90)));
-      ctx.fillRect(  x1, y - ROW_HEIGHT, x2 - x1, ROW_HEIGHT);
-      ctx.strokeRect(x1, y - ROW_HEIGHT, x2 - x1, ROW_HEIGHT);
+      ctx.fillRect(  x1, y - Constants.ROW_HEIGHT, x2 - x1, Constants.ROW_HEIGHT);
+      ctx.strokeRect(x1, y - Constants.ROW_HEIGHT, x2 - x1, Constants.ROW_HEIGHT);
    
     },
 
@@ -967,7 +858,7 @@
           x2     = x0 + ladder.width/2 - 10,
           w      = x2 - x1,
           ny     = 4, // overdraw the ladders
-          h      = ROW_HEIGHT + ny;
+          h      = Constants.ROW_HEIGHT + ny;
 
       ctx.drawImage(ladder, 0, d*30, ladder.width, 30, x1, y-h, w, h);
 
@@ -981,8 +872,8 @@
           x     = col2x(col+0.5),
           a     = Game.Math.normalizeAngle180(x2a(x) - x2a(camera.rx)),
           d     = Math.floor(12 * Math.min(1, Math.abs(a/90))),
-          w     = COIN.W,
-          h     = COIN.H,
+          w     = Constants.COIN.W,
+          h     = Constants.COIN.H,
           x0    = tx(x, tower.or),
           x1    = x0 - w/2,
           x2    = x0 + w/2;
@@ -1009,7 +900,7 @@
 
     renderPlayer: function(ctx) {
       ctx.drawImage(this.images.player, player.animation.x + (player.animationFrame * player.animation.w), player.animation.y, player.animation.w, player.animation.h, tx(player.rx, tower.ir) - player.w/2, ty(player.ry) - player.h, player.w, player.h);
-      if (PLAYER.DEBUG) {
+      if (Constants.PLAYER.DEBUG) {
         ctx.strokeStyle = "#000000";
         ctx.lineWidth   = 1;
         ctx.strokeRect(tx(player.rx, tower.ir) - player.w/2, ty(player.ry + player.h), player.w, player.h);
@@ -1037,14 +928,14 @@
     //-------------------------------------------------------------------------
 
     createStars: function() {
-      return Game.Canvas.render(WIDTH, HEIGHT, function(ctx) {
+      return Game.Canvas.render(Constants.WIDTH, Constants.HEIGHT, function(ctx) {
         var n, x, y, r, max = 500,
           colors = ["#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#800000", "#808000"],
           sizes  = [0.25, 0.25, 0.25, 0.25, 0.5, 0.5, 0.5, 0.5, 1, 1, 1, 1, 2, 2];
         for(n = 0 ; n < max ; n++) {
           ctx.fillStyle = Game.Math.darken(Game.Math.randomChoice(colors), Game.Math.random(1,100));
-          x = Game.Math.randomInt(2, WIDTH-4);
-          y = Game.Math.randomInt(2, HEIGHT-4);
+          x = Game.Math.randomInt(2, Constants.WIDTH-4);
+          y = Game.Math.randomInt(2, Constants.HEIGHT-4);
           r = Game.Math.randomChoice(sizes);
           ctx.fillRect(x,y,r,r);
         } 
@@ -1053,10 +944,10 @@
 
     //-------------------------------------------------------------------------
 
-    createGradient: function() {
+    createGradient: function(tower) {
 
-      var radius   = tower.ir,
-          color    = tower.color.wall,
+      var radius   = this.tower.ir,
+          color    = this.tower.color.wall,
           gradient = this.ctx.createLinearGradient(-radius, 0, radius, 0);
 
       gradient.addColorStop(0,   Game.Math.darken(color, 20));
@@ -1072,8 +963,8 @@
     //-------------------------------------------------------------------------
 
     createGround: function() {
-      var w     = WIDTH*GROUND_SPEED,
-          h     = HORIZON,
+      var w     = Constants.WIDTH*Constants.GROUND_SPEED,
+          h     = Constants.HORIZON,
           tile  = this.images.ground,
           tw    = tile.width,
           th    = tile.height,
@@ -1088,6 +979,13 @@
     }
 
   });
+
+
+
+
+
+
+
 
   //===========================================================================
   // LETS PLAY!
