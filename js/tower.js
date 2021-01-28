@@ -575,7 +575,8 @@
     },
 
     hitMonster: function() {
-      console.log("monster hit " + this.score);
+      this.score = this.score - 10;
+      Dom.set(score, this.score);
       this.hurting = true;
       return true;
     }
