@@ -12,7 +12,7 @@
             --white: hsl(0, 0%, 100%); 
             --orange: hsl(32, 97%, 51%);
             --blue-dark: hsl(199, 74%, 18%);
-            --hero-width: clamp(380px, 40vw, 1000px);
+            --hero-width: clamp(360px, 40vw, 860px);
             --font-special: 'Bungee', cursive;
             --button-size: clamp(2.5rem, 4vw, 6rem);
         }
@@ -37,12 +37,14 @@
         }
         .hero  {
             position: absolute;
-            bottom: 0vh;
-            left: 50%;
-            margin-left: calc( var(--hero-width) / -2 );
+            bottom: 3vh;
+            left: 10vw;
+            /* left: 50%;
+            margin-left: calc( var(--hero-width) / -2 ); */
             z-index: 2;
             width: var(--hero-width);
             height: auto;
+            transform: scaleX(-1);
             opacity: 0.95;
         }
         .headline{
@@ -65,8 +67,9 @@
         .button {
             position: absolute;
             bottom: 15vh;
-            left: 50%;
-            margin-left: calc(var(--button-size) * -2.7);
+            /* left: 50%;
+            margin-left: calc(var(--button-size) * -2.7); */
+            right: 20vw;
             display: block;
             font-size: var(--button-size);
             padding: calc(var(--button-size) / 2) var(--button-size);
@@ -84,7 +87,8 @@
 <body>
     <div class="main">
         <h1 class="headline">UP-WE-GO</h1>
-        <img class="hero" src="./images/start-page/hero.svg" alt="hero">
+        <!-- <img class="hero" src="./images/start-page/hero.svg" alt="hero"> -->
+        <img class="hero" src="./images/start-page/hero-up.svg" alt="hero">
         <img class="moon" src="./images/start-page/moon.svg" alt="moon">
         <a class="button" href="./game.html">
             START
