@@ -2,12 +2,93 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Up We Go</title>
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --white: hsl(0, 0%, 100%); 
+            --orange: hsl(32, 97%, 51%);
+            --blue-dark: hsl(199, 74%, 18%);
+            --hero-width: clamp(380px, 40vw, 1000px);
+            --font-special: 'Bungee', cursive;
+            --button-size: clamp(2.5rem, 4vw, 6rem);
+        }
+        body{
+            margin: 0; padding: 0;
+            overflow: hidden;
+            background: radial-gradient(52.6% 38.23% at 50% 60.94%, #1A9FDA 0%, #061E29 100%) no-repeat;
+        }
+        .main{
+            background: url(./images/start-page/planet.svg) 50% 110% no-repeat;
+            background-size: 100% 40%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .moon {
+            position: absolute;
+            top: 5vh;
+            right: 10vw;
+            width: 15vw;
+            height: auto;
+            min-width: 200px;
+        }
+        .hero  {
+            position: absolute;
+            bottom: 0vh;
+            left: 50%;
+            margin-left: calc( var(--hero-width) / -2 );
+            z-index: 2;
+            width: var(--hero-width);
+            height: auto;
+            opacity: 0.95;
+        }
+        .headline{
+            position: absolute;
+            bottom: 40vh;
+            left: 0;
+            z-index: 1;
+            white-space: nowrap;
+            font-family: var(--font-special);
+            font-size: 18vw;
+            line-height: 0;
+            width: 100%;
+            text-align: center;
+            color: var(--white);
+            text-shadow:    0 1vw   0   hsla(0, 100%, 0%, 0.1), 
+                            0 1.5vw 0   hsla(0, 100%, 0%, 0.1), 
+                            0 2.25vw   1vw   hsla(0, 100%, 0%, 0.1),
+                            0 0   3vw   rgb(14, 177, 163);
+        }
+        .button {
+            position: absolute;
+            bottom: 15vh;
+            left: 50%;
+            margin-left: calc(var(--button-size) * -2.7);
+            display: block;
+            font-size: var(--button-size);
+            padding: calc(var(--button-size) / 2) var(--button-size);
+            z-index: 5;
+            line-height: 1;
+
+            font-family: var(--font-special);
+            color: var(--white);
+            border-radius: var(--button-size);
+            text-decoration: none;
+            background: var(--orange);
+        }
+    </style>
 </head>
 <body>
-    <h1>Mängu avaleht</h1>
-    <p>Siia tulevad pildid möllud värgid</p>
-    <a href="game.html">mängi</a>
+    <div class="main">
+        <h1 class="headline">UP-WE-GO</h1>
+        <img class="hero" src="./images/start-page/hero.svg" alt="hero">
+        <img class="moon" src="./images/start-page/moon.svg" alt="moon">
+        <a class="button" href="./game.html">
+            START
+        </a>
+    </div>
 </body>
 </html>
