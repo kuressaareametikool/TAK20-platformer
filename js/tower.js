@@ -46,7 +46,7 @@
       },
       MONSTERS = [
         { 
-          name: "NAUKA", 
+          name: "CLOWN", 
           nx: -0.5, ny: -0.5, 
           w: 1.5*METER, h: 1.5*METER, 
           speed: 4*METER, 
@@ -58,38 +58,38 @@
           } 
         },
         { 
-          name: "RANDO", 
+          name: "HEARTEYE", 
           nx: -0.5, ny: -0.5, 
-          w: 2.5*METER, h: 1.0*METER, 
+          w: 1.5*METER, h: 1.5*METER, 
           speed: 8*METER, 
           dir: 'left', 
           vertical: false, horizontal: true, 
           animation: { 
-            left:   { x: 100, y: 7, w: 76, h: 36, frames: 2, fps: 5 }, 
-            right:  { x: 252, y: 7, w: 76, h: 36, frames: 2, fps: 5 } 
+            left:   { x: 100, y: 0, w: 50, h: 50, frames: 2, fps: 5 }, 
+            right:  { x: 200, y: 0, w: 50, h: 50, frames: 2, fps: 5 } 
           } 
         },
-        { name: "OOKER", 
+        { name: "KYSSER", 
           nx: -0.5, ny: 0.0, 
-          w: 1.5*METER, h: 1.0*METER, 
+          w: 1.5*METER, h: 1.5*METER, 
           speed: 4*METER, 
           dir: 'right', 
           vertical: false, horizontal: true, 
           animation: { 
-            left:   { x: 404, y: 11, w: 50, h: 28, frames: 2, fps: 5 }, 
-            right:  { x: 504, y: 11, w: 50, h: 28, frames: 2, fps: 5 } 
+            left:   { x: 300, y: 0, w: 50, h: 50, frames: 2, fps: 5 }, 
+            right:  { x: 400, y: 0, w: 50, h: 50, frames: 2, fps: 5 } 
           } 
         },
         { 
-          name: "KARIN", 
+          name: "MONEY", 
           nx: -0.5, ny: 0.0, 
-          w: 1.5*METER, h: 1.0*METER, 
+          w: 1.5*METER, h: 1.5*METER, 
           speed: 2*METER, 
           dir: 'left', 
           vertical: false, horizontal: true, 
           animation: { 
-            left:   { x: 604, y: 9, w: 58, h: 32, frames: 2, fps: 5 }, 
-            right:  { x: 720, y: 9, w: 58, h: 32, frames: 2, fps: 5 } 
+            left:   { x: 500, y: 0, w: 50, h: 50, frames: 2, fps: 5 }, 
+            right:  { x: 600, y: 0, w: 50, h: 50, frames: 2, fps: 5 } 
           } 
         }
       ];
