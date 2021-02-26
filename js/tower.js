@@ -53,8 +53,8 @@
           dir: 'up', 
           vertical: true, horizontal: false, 
           animation: { 
-            up:   { x: 0, y: 0, w: 50, h: 50, frames: 2, fps: 5 }, 
-            down: { x: 0, y: 0, w: 50, h: 50, frames: 2, fps: 5 } 
+            up:   { x: 0, y: 0, w: 50, h: 50, frames: 2, fps: 20 }, 
+            down: { x: 0, y: 0, w: 50, h: 50, frames: 2, fps: 20 } 
           } 
         },
         { 
@@ -65,8 +65,8 @@
           dir: 'left', 
           vertical: false, horizontal: true, 
           animation: { 
-            left:   { x: 100, y: 0, w: 50, h: 50, frames: 2, fps: 5 }, 
-            right:  { x: 200, y: 0, w: 50, h: 50, frames: 2, fps: 5 } 
+            left:   { x: 100, y: 0, w: 50, h: 50, frames: 2, fps: 10 }, 
+            right:  { x: 200, y: 0, w: 50, h: 50, frames: 2, fps: 10 } 
           } 
         },
         { name: "KYSSER", 
@@ -88,8 +88,8 @@
           dir: 'left', 
           vertical: false, horizontal: true, 
           animation: { 
-            left:   { x: 500, y: 0, w: 50, h: 50, frames: 2, fps: 5 }, 
-            right:  { x: 600, y: 0, w: 50, h: 50, frames: 2, fps: 5 } 
+            left:   { x: 500, y: 0, w: 50, h: 50, frames: 2, fps: 10 }, 
+            right:  { x: 600, y: 0, w: 50, h: 50, frames: 2, fps: 10 } 
           } 
         }
       ];
@@ -126,7 +126,7 @@
 
   function run() {
     Game.Load.images(IMAGES, function(images) {
-      Game.Load.json("levels/demo", function(level) {
+      Game.Load.json("levels/rets-level", function(level) {
         setup(images, level);
         Game.run({
           fps:    FPS,
