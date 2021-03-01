@@ -22,8 +22,8 @@
       MAXDX         = 10,                                                   // player max horizontal speed (meters per second)
       MAXDY         = (ROW_SURFACE*FPS/METER),                              // player max vertical speed (meters per second) - ENSURES CANNOT FALL THROUGH PLATFORM SURFACE
       CLIMBDY       = 8,                                                    // player climbing speed (meters per second)
-      ACCEL         = 1/4,                                                  // player take 1/4 second to reach maxdx (horizontal acceleration)
-      FRICTION      = 1/8,                                                  // player take 1/8 second to stop from maxdx (horizontal friction)
+      ACCEL         = 1/2,                                                  // player take 1/4 second to reach maxdx (horizontal acceleration)
+      FRICTION      = 1/2,                                                  // player take 1/8 second to stop from maxdx (horizontal friction)
       IMPULSE       = 15 * FPS,                                             // player jump impulse
       FALLING_JUMP  = FPS/5,                                                // player allowed to jump for 1/5 second after falling off a platform
       LADDER_EDGE   = 0.6,                                                  // how far from ladder center (60%) is ladder's true collision boundary, e.g. you fall off if you get more than 60% away from center of ladder
@@ -48,7 +48,7 @@
         { 
           name: "CLOWN", 
           nx: -0.5, ny: -0.5, 
-          w: 1.5*METER, h: 1.5*METER, 
+          w: 2*METER, h: 2*METER, 
           speed: 4*METER, 
           dir: 'up', 
           vertical: true, horizontal: false, 
