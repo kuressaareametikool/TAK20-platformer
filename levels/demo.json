@@ -1,8 +1,8 @@
 {
   "name":  "demo level",
   "color": {
-    "wall":     "#333333",
-    "platform": "#C0C0C0",
+    "wall":     "#2576dd",
+    "platform": "#ffffff",
     "stroke":   "#000000"
   },
   "map": [
@@ -131,19 +131,19 @@
     "                    ",
     " XX                 ",
     "X  X                ",
-    "    X              X",
+    "    X  0           X",
     "                  X ",
     "oooooooo        0X  ",
     "HXXXXXXX        X   ",
-    "H       XX    XX    ",
-    "H                   ",
+    "H       XX  2 XX    ",
+    "H               1   ",
     "H           0       ",
     "H  3       XX       ",
-    "XXHXXXX   XXXX2     ",
+    "XXHXXXX 0 XXXX   1  ",
     "  H       X      X  ",
     "  H      X          ",
     "  H                 ",
-    "  H                 ",
-    "  H         oooooooo"
+    "  H          XXXXX  ",
+    "  H    3    3oooooooo"
   ]
 }
