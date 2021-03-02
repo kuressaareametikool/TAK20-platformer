@@ -134,17 +134,17 @@
     "    X  0           X    ",
     "                  X     ",
     "ooo              X      ",
-    "HXXXXXXX        X       ",
-    "H       XX              ",
-    "H                       ",
+    "HXXXXXXX        X    X  ",
+    "H       X               ",
+    "H                  XXXX ",
     "H                       ",
     "H         XXXXXXXX      ",
-    "XXX                     ",
-    "     XX           0     ",
-    " 0                      ",
-    "            2   oooo    ",
-    "  HX    XXXXXXXXXXXXX 0 ",
-    "  H  X                  ",
-    "            oooooooo    "
+    "H    X                  ",
+    "     XX X         0     ",
+    " 0      X               ",
+    "        X   2   oooo   X",
+    "  HX    XXXXXXX XXXXX 0X",
+    "  H  XX    X           X",
+    "  H      ooXo1oooooo   X"
   ]
 }

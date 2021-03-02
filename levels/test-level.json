@@ -1,0 +1,32 @@
+{
+  "name":  "demo level",
+  "color": {
+    "wall":     "#152D1F",
+    "platform": "#0C4523",
+    "stroke":   "#000000"
+  },
+  "map": [
+    "XXXXXXXXXXXXXXXXXHXXXXXX",
+    "                 H      ",
+    "                 H      ",
+    "                 H      ",
+    "     o           H      ",
+    "           H            ",
+    "X  X                    ",
+    "    X  0           X    ",
+    "                  X     ",
+    "ooo              X      ",
+    "HXXXXXXX        X    X  ",
+    "H       X               ",
+    "H                  XXXX ",
+    "H    3                  ",
+    "H         XXXXXXXX      ",
+    "H    X                  ",
+    "     XX X         0     ",
+    " 0      X               ",
+    "        X   2   oooo   X",
+    "  HX    XXXXXXX XXXXX 0X",
+    "  H  XX    X           X",
+    "  H      ooXo1oooooo   X"
+  ]
+}
