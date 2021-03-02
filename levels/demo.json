@@ -1,14 +1,14 @@
 {
   "name":  "demo level",
   "color": {
-    "wall":     "#333333",
-    "platform": "#C0C0C0",
+    "wall":     "#7d1f02",
+    "platform": "#a200ff",
     "stroke":   "#000000"
   },
   "map": [
     "XXXXXXXXXXXXXXXXXHXX",
     "                 H  ",
-    "                 H  ",
+    "             d    H  ",
     "                 H  ",
     "     o           H  ",
     "    o o          H  ",
