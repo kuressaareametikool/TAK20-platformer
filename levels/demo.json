@@ -6,6 +6,8 @@
     "stroke":   "#000000"
   },
   "map": [
+
+    
     "XXXXXXXXXXXXXXXXXHXX",
     "                 H  ",
     "                 H  ",
@@ -42,8 +44,8 @@
     "  Ho                ",
     "  Ho                ",
     "  Ho                ",
-    "  Ho                ",
-    "  Ho                ",
+    "  Ho          H     ",
+    "  Ho          H      ",
     "  Ho          H     ",
     "   o          H     ",
     "  Ho          H     ",
@@ -70,7 +72,7 @@
     "   H       0        ",
     "   H      0         ",
     "   H     0          ",
-    "   H    0           ",
+    "   H    0  0 0       ",
     "   H   0            ",
     "   H  0             ",
     "   Ho0ooooooooooo   ",
@@ -100,7 +102,7 @@
     "            o  H    ",
     "            o  H    ",
     "            o  H    ",
-    "            o  H    ",
+    "            o  X  X ",
     "            o 0H    ",
     "            o  H    ",
     "            o  H    ",
@@ -117,11 +119,11 @@
     "o  o       H        ",
     "X  o    0  H        ",
     "   o       H        ",
-    "   X       H        ",
+    "   X       X 0       ",
     "           H        ",
     "oooo       H        ",
     "XXXX       H        ",
-    "           H        ",
+    "           X        ",
     "           H        ",
     "           H        ",
     "           H        ",
@@ -142,8 +144,8 @@
     "XXHXXXX   XXXX2     ",
     "  H       X      X  ",
     "  H      X          ",
-    "  H                 ",
-    "  H                 ",
-    "  H         oooooooo"
+    "  H     X           ",
+    "  H    X            ",
+    "  H   X      oooooooo"
   ]
 }
