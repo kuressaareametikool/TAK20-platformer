@@ -35,10 +35,10 @@
       PSH           = 96,                                                   // player sprite height
       PLAYER        = { 
         DEBUG: false, // enable player debug rendering (bounding box and collision points)
-        STAND: { x: 0,  y: 0, w: PSW, h: PSH, frames: 1,  fps: 30 },        // animation - player standing still
-        BACK:  { x: 72, y: 0, w: PSW, h: PSH, frames: 1,  fps: 30 },        // animation - player standing still with back to camera (on ladder but not moving)
-        RIGHT: { x: 144,    y: 0, w: PSW, h: PSH, frames: 4, fps: 30 },        // animation - player running right
-        LEFT:  { x: 432, y: 0, w: PSW, h: PSH, frames: 4, fps: 30 },        // animation - player running left
+        STAND: { x: 0,  y: 0, w: PSW, h: PSH, frames: 1,  fps: 1 },        // animation - player standing still
+        BACK:  { x: 100, y: 0, w: PSW, h: PSH, frames: 1,  fps: 1 },        // animation - player standing still with back to camera (on ladder but not moving)
+        RIGHT: { x: 225,    y: 0, w: PSW, h: PSH, frames: 2, fps: 1 },        // animation - player running right
+        LEFT:  { x: 475, y: 0, w: PSW, h: PSH, frames: 2, fps: 1 },        // animation - player running left
         CLIMB: { x: 864, y: 0, w: PSW, h: PSH, frames: 4, fps: 20 },        // animation - player climbing ladder
         HURTL: { x: 792, y: 0, w: PSW, h: PSH, frames: 1,  fps: 10 },        // animation - player hurt while running left
         HURTR: { x: 720, y: 0, w: PSW, h: PSH, frames: 1,  fps: 10 }         // animation - player hurt while running right
